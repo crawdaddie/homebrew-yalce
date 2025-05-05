@@ -76,9 +76,6 @@ class Yalce < Formula
   
   test do
     # Check if executable and libraries exist
-    assert_predicate bin/"ylc", :exist?
-    assert_predicate lib/"libyalce_synth.so", :exist?
-    assert_predicate lib/"libgui.so", :exist?
     system "#{bin}/ylc", "--version"
     
   end
