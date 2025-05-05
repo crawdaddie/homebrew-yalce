@@ -68,18 +68,17 @@ class Yalce < Formula
       
   end
   def caveats
-    share_path = "#{opt_share}/ylc"
     <<~EOS
       YLC executable has been installed to #{bin}/ylc
       You may want to symlink that to somewhere on your path or add #{bin} itself to your path
       
-      YLC modules and bindings have been installed to #{share_path}
+      YLC modules and bindings have been installed to #{opt_share}
       You may specify that as YLC's base directory for modules by adding this env var:
       
-      export YLC_BASE_DIR="#{share_path}"
+      export YLC_BASE_DIR="#{opt_share}"
       
       To add this to your .zshrc file, run:
-      echo 'export YLC_BASE_DIR="#{share_path}"' >> ~/.zshrc
+      echo 'export YLC_BASE_DIR="#{opt_share}"' >> ~/.zshrc
       
       Then restart your terminal or run:
       source ~/.zshrc
