@@ -15,6 +15,20 @@ class Yalce < Formula
   depends_on "fftw"
   
   def install
+    (prefix/".env").write <<~EOS
+      export BREW_PREFIX=$(brew --prefix)
+      export CPATH=$BREW_PREFIX/include
+      export LIBRARY_PATH=$BREW_PREFIX/lib
+      export LLVM_PATH=$BREW_PREFIX/opt/llvm@16
+      export SDL2_PATH=$BREW_PREFIX/opt/sdl2
+      export SDL2_TTF_PATH=$BREW_PREFIX/opt/sdl2_ttf
+      export SDL2_GFX_PATH=$BREW_PREFIX/opt/sdl2_gfx
+      export READLINE_PREFIX=$BREW_PREFIX/opt/readline
+      export LIBSOUNDIO_PATH=$BREW_PREFIX/opt/libsoundio
+      export LIBSNDFILE_PATH=$BREW_PREFIX/opt/libsndfile
+      export LIBFFTW3_PATH=$BREW_PREFIX/opt/fftw
+    EOS
+
     system "make"
     # Install the binary from the build directory
     bin.install "build/ylc"
@@ -30,28 +44,42 @@ class Yalce < Formula
            "@rpath/libgui.so", 
            "#{opt_lib}/libgui.so", 
            "#{bin}/ylc"
+
+    # Create share directory for all YALCE files
+    share_path = share/"yalce"
+    share_path.mkpath
+    
+    # Install engine binding files
+    engine_bindings_path = share_path/"engine/bindings"
+    engine_bindings_path.mkpath
+    engine_bindings_path.install "engine/bindings/MIDI.ylc"
+    engine_bindings_path.install "engine/bindings/Sched.ylc"
+    engine_bindings_path.install "engine/bindings/Synth.ylc"
+    
+    # Install GUI binding files
+    gui_bindings_path = share_path/"gui/bindings/gui"
+    gui_bindings_path.mkpath
+    gui_bindings_path.install "gui/bindings/gui/Gui.ylc"
+    
+    # Install folders
+    share_path.install "dev"
+    share_path.install "lib"
+    share_path.install "synths"
+    def caveats
+      <<~EOS
+        YALCE has been installed with required files in:
+          #{opt_share}/yalce
+      EOS
+    end
       
-    # Install environment file
-    (prefix/".env").write <<~EOS
-      export BREW_PREFIX=$(brew --prefix)
-      export CPATH=$BREW_PREFIX/include
-      export LIBRARY_PATH=$BREW_PREFIX/lib
-      export LLVM_PATH=$BREW_PREFIX/opt/llvm@16
-      export SDL2_PATH=$BREW_PREFIX/opt/sdl2
-      export SDL2_TTF_PATH=$BREW_PREFIX/opt/sdl2_ttf
-      export SDL2_GFX_PATH=$BREW_PREFIX/opt/sdl2_gfx
-      export READLINE_PREFIX=$BREW_PREFIX/opt/readline
-      export LIBSOUNDIO_PATH=$BREW_PREFIX/opt/libsoundio
-      export LIBSNDFILE_PATH=$BREW_PREFIX/opt/libsndfile
-      export LIBFFTW3_PATH=$BREW_PREFIX/opt/fftw
-    EOS
   end
   
   test do
-    # If your app supports running with a --version flag
+    # Check if executable and libraries exist
+    assert_predicate bin/"ylc", :exist?
+    assert_predicate lib/"libyalce_synth.so", :exist?
+    assert_predicate lib/"libgui.so", :exist?
     system "#{bin}/ylc", "--version"
     
-    # Alternative test if --version isn't supported:
-    # assert_predicate bin/"ylc", :exist?
   end
 end
