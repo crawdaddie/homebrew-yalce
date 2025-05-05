@@ -46,7 +46,7 @@ class Yalce < Formula
            "#{bin}/ylc"
 
     # Create share directory for all YALCE files
-    share_path = share/"ylc"
+    share_path = share
     share_path.mkpath
     
     # Install engine binding files
@@ -66,6 +66,24 @@ class Yalce < Formula
     share_path.install "lib"
     share_path.install "synths"
       
+  end
+  def caveats
+    share_path = "#{opt_share}/ylc"
+    <<~EOS
+      YLC executable has been installed to #{bin}/ylc
+      You may want to symlink that to somewhere on your path or add #{bin} itself to your path
+      
+      YLC modules and bindings have been installed to #{share_path}
+      You may specify that as YLC's base directory for modules by adding this env var:
+      
+      export YLC_BASE_DIR="#{share_path}"
+      
+      To add this to your .zshrc file, run:
+      echo 'export YLC_BASE_DIR="#{share_path}"' >> ~/.zshrc
+      
+      Then restart your terminal or run:
+      source ~/.zshrc
+    EOS
   end
   
   test do
