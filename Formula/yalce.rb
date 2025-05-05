@@ -1,5 +1,5 @@
 class Yalce < Formula
-  desc "Your audio/sound application" # Replace with a proper description
+  desc "Yalce sound application" 
   homepage "https://github.com/crawdaddie/yalce"
   url "https://github.com/crawdaddie/yalce.git", branch: "main"
   version "0.1.0"
@@ -65,18 +65,10 @@ class Yalce < Formula
     share_path.install "dev"
     share_path.install "lib"
     share_path.install "synths"
-    def caveats
-      <<~EOS
-        YALCE has been installed with required files in:
-          #{opt_share}/yalce
-      EOS
-    end
       
   end
   
   test do
-    # Check if executable and libraries exist
     system "#{bin}/ylc", "--version"
-    
   end
 end
