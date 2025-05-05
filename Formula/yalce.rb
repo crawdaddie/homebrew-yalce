@@ -46,7 +46,7 @@ class Yalce < Formula
            "#{bin}/ylc"
 
     # Create share directory for all YALCE files
-    share_path = share/"yalce"
+    share_path = share/"ylc"
     share_path.mkpath
     
     # Install engine binding files
@@ -59,7 +59,7 @@ class Yalce < Formula
     # Install GUI binding files
     gui_bindings_path = share_path/"gui/bindings/gui"
     gui_bindings_path.mkpath
-    gui_bindings_path.install "gui/bindings/gui/Gui.ylc"
+    gui_bindings_path.install "gui/bindings/Gui.ylc"
     
     # Install folders
     share_path.install "dev"
