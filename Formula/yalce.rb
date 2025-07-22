@@ -15,7 +15,7 @@ class Yalce < Formula
   depends_on "fftw"
   
   def install
-    (".env").write <<~EOS
+    File.write(".env", <<~EOS
       export BREW_PREFIX=$(brew --prefix)
       export CPATH=$BREW_PREFIX/include
       export LIBRARY_PATH=$BREW_PREFIX/lib
@@ -27,7 +27,7 @@ class Yalce < Formula
       export LIBSOUNDIO_PATH=$BREW_PREFIX/opt/libsoundio
       export LIBSNDFILE_PATH=$BREW_PREFIX/opt/libsndfile
       export LIBFFTW3_PATH=$BREW_PREFIX/opt/fftw
-    EOS
+    EOS)
 
     system "make"
     # Install the binary from the build directory
