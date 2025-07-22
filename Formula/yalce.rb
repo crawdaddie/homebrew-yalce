@@ -15,19 +15,19 @@ class Yalce < Formula
   depends_on "fftw"
   
   def install
-    File.write(".env", <<~EOS)
-      export BREW_PREFIX=$(brew --prefix)
-      export CPATH=$BREW_PREFIX/include
-      export LIBRARY_PATH=$BREW_PREFIX/lib
-      export LLVM_PATH=$BREW_PREFIX/opt/llvm@16
-      export SDL2_PATH=$BREW_PREFIX/opt/sdl2
-      export SDL2_TTF_PATH=$BREW_PREFIX/opt/sdl2_ttf
-      export SDL2_GFX_PATH=$BREW_PREFIX/opt/sdl2_gfx
-      export READLINE_PREFIX=$BREW_PREFIX/opt/readline
-      export LIBSOUNDIO_PATH=$BREW_PREFIX/opt/libsoundio
-      export LIBSNDFILE_PATH=$BREW_PREFIX/opt/libsndfile
-      export LIBFFTW3_PATH=$BREW_PREFIX/opt/fftw
-    EOS
+    brew_prefix = HOMEBREW_PREFIX
+    env_content = "export CPATH=#{brew_prefix}/include\n" +
+                  "export LIBRARY_PATH=#{brew_prefix}/lib\n" +
+                  "export LLVM_PATH=#{brew_prefix}/opt/llvm@16\n" +
+                  "export SDL2_PATH=#{brew_prefix}/opt/sdl2\n" +
+                  "export SDL2_TTF_PATH=#{brew_prefix}/opt/sdl2_ttf\n" +
+                  "export SDL2_GFX_PATH=#{brew_prefix}/opt/sdl2_gfx\n" +
+                  "export READLINE_PREFIX=#{brew_prefix}/opt/readline\n" +
+                  "export LIBSOUNDIO_PATH=#{brew_prefix}/opt/libsoundio\n" +
+                  "export LIBSNDFILE_PATH=#{brew_prefix}/opt/libsndfile\n" +
+                  "export LIBFFTW3_PATH=#{brew_prefix}/opt/fftw\n"
+    
+    File.write(".env", env_content)
 
     system "make"
     # Install the binary from the build directory
