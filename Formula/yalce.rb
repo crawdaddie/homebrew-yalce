@@ -15,7 +15,7 @@ class Yalce < Formula
   depends_on "fftw"
   
   def install
-    File.write(".env").write <<~EOS
+    (prefix/".env").write <<~EOS
       export BREW_PREFIX=$(brew --prefix)
       export CPATH=$BREW_PREFIX/include
       export LIBRARY_PATH=$BREW_PREFIX/lib
